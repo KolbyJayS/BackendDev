@@ -80,8 +80,10 @@ def authenticate_user(username, password):
             return cur.fetchone() is not None
 
 def hash_password(password):
+    return bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
-
+def check_password(password, hashed):
+    return bcrypt.checkpw(password.encode('utf-8'), hashed)
 
 def show_all_users():
     with get_connection() as conn:
@@ -94,6 +96,8 @@ def clear_all_users():
         with conn.cursor() as cur:
             cur.execute("DELETE FROM users")
             conn.commit()
+
+#######################################################################
 
 def main():
     return 
